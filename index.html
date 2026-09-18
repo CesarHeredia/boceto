@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuidora AQUAZEN | Peluquería & Alimentos para Mascotas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        aquazen: {
+                            blue: '#00A8E8',
+                            darkblue: '#003459',
+                            green: '#00FF66',
+                            darkgreen: '#00A843',
+                            bg: '#0B0F19',
+                            card: '#151C2C',
+                            border: '#2A354C',
+                            red: '#FF3366'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19;
+            color: #F3F4F6;
+        }
+
+        .pulse-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .glow-blue {
+            box-shadow: 0 0 25px -5px rgba(0, 168, 232, 0.4);
+        }
+
+        .glow-green {
+            box-shadow: 0 0 25px -5px rgba(0, 255, 102, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2A354C;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00A8E8;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-aquazen-bg text-gray-100 min-h-screen flex flex-col justify-between selection:bg-aquazen-green selection:text-black">
+
+    <!-- HEADER / NAVIGATION -->
+    <header
+        class="sticky top-0 z-40 bg-aquazen-bg/90 backdrop-blur-md border-b border-aquazen-border/60 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+
+                <!-- BRAND LOGO (Texto Limpio sin Icono a la izquierda) -->
+                <a href="#" class="flex items-center group">
+                    <div class="flex flex-col">
+                        <span
+                            class="text-xs uppercase tracking-widest text-aquazen-red font-extrabold -mb-1">Distribuidora</span>
+                        <span
+                            class="text-2xl sm:text-3xl font-black tracking-tight text-white group-hover:text-aquazen-blue transition-colors">
+                            AQUA<span class="text-aquazen-blue">ZEN</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAVIGATION (Sin la opción 'Inicio') -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#servicios"
+                        class="text-sm font-semibold text-gray-300 hover:text-aquazen-green transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-scissors text-xs text-aquazen-green"></i> Peluquería
+                    </a>
+                    <a href="#productos"
+                        class="text-sm font-semibold text-gray-300 hover:text-aquazen-blue transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-bone text-xs text-aquazen-blue"></i> Productos & Alimentos
+                    </a>
+                    <a href="#ubicacion"
+                        class="text-sm font-semibold text-gray-300 hover:text-aquazen-green transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-xs text-aquazen-green"></i> Ubicación
+                    </a>
+                </nav>
+
+                <!-- CART BUTTON & ACTIONS -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="openCart()"
+                        class="relative p-2.5 rounded-xl bg-aquazen-card border border-aquazen-border text-gray-200 hover:text-aquazen-green hover:border-aquazen-green/50 transition-all group">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span id="cart-count"
+                            class="absolute -top-2 -right-2 bg-aquazen-red text-white text-xs font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-aquazen-bg shadow-md">0</span>
+                    </button>
+
+                    <a href="#servicios"
+                        class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-black bg-aquazen-green hover:bg-emerald-400 transition-all shadow-lg shadow-aquazen-green/20">
+                        Reservar Cita
+                    </a>
+
+                    <!-- Mobile menu button -->
+                    <button onclick="toggleMobileMenu()"
+                        class="md:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-aquazen-card">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE MENU DROPDOWN -->
+        <div id="mobile-menu"
+            class="hidden md:hidden border-t border-aquazen-border bg-aquazen-card px-4 pt-3 pb-6 space-y-3">
+            <a href="#servicios" onclick="toggleMobileMenu()"
+                class="block py-2 text-base font-semibold text-gray-200 hover:text-aquazen-green">
+                <i class="fa-solid fa-scissors w-6 text-aquazen-green"></i> Peluquería Canina
+            </a>
+            <a href="#productos" onclick="toggleMobileMenu()"
+                class="block py-2 text-base font-semibold text-gray-200 hover:text-aquazen-blue">
+                <i class="fa-solid fa-bone w-6 text-aquazen-blue"></i> Productos & Alimentos
+            </a>
+            <a href="#ubicacion" onclick="toggleMobileMenu()"
+                class="block py-2 text-base font-semibold text-gray-200 hover:text-aquazen-green">
+                <i class="fa-solid fa-location-dot w-6 text-aquazen-green"></i> Ubicación
+            </a>
+            <a href="#servicios" onclick="toggleMobileMenu()"
+                class="block text-center py-3 rounded-xl font-bold text-black bg-aquazen-green mt-2">
+                Reservar Cita Peluquería
+            </a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
+        <!-- Background Glowing Orbs -->
+        <div
+            class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-aquazen-blue/15 rounded-full blur-3xl pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-10 right-10 w-80 h-80 bg-aquazen-green/10 rounded-full blur-3xl pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+                <!-- Left Content Column -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-aquazen-card border border-aquazen-border text-aquazen-green text-xs font-bold uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-aquazen-green animate-ping"></span>
+                        Especialistas en Estética y Nutrición Mascotas
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+                        Cuidado Premium, <br class="hidden sm:inline" />
+                        <span
+                            class="bg-gradient-to-r from-aquazen-blue via-teal-300 to-aquazen-green bg-clip-text text-transparent">
+                            Estilo y Nutrición
+                        </span> Para tu Mascota
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        En <strong class="text-white">Distribuidora AQUAZEN</strong> ofrecemos servicio especializado de
+                        <strong class="text-aquazen-green">Peluquería & Grooming profesional</strong>, además de la
+                        mayor variedad de <strong class="text-aquazen-blue">alimentos concentrados y accesorios</strong>
+                        de alta calidad.
+                    </p>
+
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#servicios"
+                            class="w-full sm:w-auto px-8 py-4 rounded-xl bg-aquazen-green text-black font-extrabold hover:bg-emerald-400 transition-all shadow-lg shadow-aquazen-green/20 flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-scissors"></i>
+                            Agendar Peluquería
+                        </a>
+                        <a href="#productos"
+                            class="w-full sm:w-auto px-8 py-4 rounded-xl bg-aquazen-card border border-aquazen-border text-white font-bold hover:border-aquazen-blue hover:text-aquazen-blue transition-all flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-bag-shopping text-aquazen-blue"></i>
+                            Comprar Productos
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Graphic Column (Bulldog Mascot Illustration) -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <!-- Card Frame -->
+                        <div
+                            class="bg-gradient-to-b from-aquazen-card to-aquazen-bg border border-aquazen-border p-8 rounded-3xl shadow-2xl relative overflow-hidden group">
+
+                            <!-- ECG Pulse SVG Graphic -->
+                            <div class="w-full mb-6">
+                                <svg viewBox="0 0 500 120" class="w-full h-auto">
+                                    <path
+                                        d="M 10 60 L 100 60 L 120 10 L 140 110 L 160 30 L 180 80 L 200 60 L 230 60 C 230 45, 250 45, 250 60 C 250 45, 270 45, 270 60 C 270 80, 250 95, 250 105 C 250 95, 230 80, 230 60 L 300 60 L 320 10 L 340 110 L 360 40 L 380 70 L 400 60 L 490 60"
+                                        fill="none" stroke="#00FF66" stroke-width="6" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+
+                            <!-- Mascot Illustration -->
+                            <div class="relative flex justify-center my-4">
+                                <div
+                                    class="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-gradient-to-tr from-aquazen-blue/30 to-aquazen-green/20 flex items-center justify-center p-4 border-2 border-aquazen-blue/40">
+                                    <div
+                                        class="w-full h-full rounded-full bg-aquazen-card border border-aquazen-border flex items-center justify-center relative overflow-hidden">
+                                        <i
+                                            class="fa-solid fa-dog text-7xl sm:text-8xl text-aquazen-blue group-hover:scale-110 transition-transform duration-300"></i>
+                                        <div
+                                            class="absolute bottom-2 bg-aquazen-red text-white text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-widest">
+                                            AQUAZEN PET
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-4">
+                                <h3 class="text-xl font-black text-white">Distribuidora AQUAZEN</h3>
+                                <p class="text-xs text-aquazen-green font-semibold uppercase tracking-wider mt-1">
+                                    Grooming & Alimentos Especializados</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIO EXCLUSIVO: PELUQUERÍA & SPA -->
+    <section id="servicios" class="py-20 bg-aquazen-card/50 border-y border-aquazen-border/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span
+                    class="text-xs font-bold text-aquazen-green uppercase tracking-widest bg-aquazen-green/10 px-3 py-1 rounded-full border border-aquazen-green/20">
+                    Atención Especializada
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white">Servicio de Peluquería Canina</h2>
+                <p class="text-gray-400 text-sm sm:text-base">
+                    Cuidamos la higiene, salud de la piel y estética de tu mascota con estilistas profesionales y
+                    productos hipoalergénicos de alta gama.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Bath & Hygiene -->
+                <div
+                    class="bg-aquazen-card border border-aquazen-border rounded-2xl p-6 hover:border-aquazen-green/50 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-12 h-12 rounded-xl bg-aquazen-green/10 border border-aquazen-green/30 flex items-center justify-center text-aquazen-green text-2xl mb-6">
+                            <i class="fa-solid fa-soap"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Baño Sanitario & Hipoalergénico</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            Lavado profundo con champús dermatológicos, hidratación de pelaje, limpieza de oídos y
+                            vaciado de glándulas anales.
+                        </p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Champú dermatológico regulado</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Secado a temperatura controlada</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Limpieza de oídos y corte de uñas</li>
+                        </ul>
+                    </div>
+                    <button onclick="openBookingModal('Baño Sanitario')"
+                        class="w-full py-3 rounded-xl bg-aquazen-bg border border-aquazen-border text-aquazen-green font-bold text-xs uppercase tracking-wider hover:bg-aquazen-green hover:text-black transition-all">
+                        Agendar Servicio
+                    </button>
+                </div>
+
+                <!-- Complete Corte Grooming -->
+                <div
+                    class="bg-aquazen-card border-2 border-aquazen-green rounded-2xl p-6 shadow-xl relative flex flex-col justify-between">
+                    <div
+                        class="absolute -top-3 right-6 bg-aquazen-green text-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                        Más Popular
+                    </div>
+                    <div>
+                        <div
+                            class="w-12 h-12 rounded-xl bg-aquazen-green/20 border border-aquazen-green flex items-center justify-center text-aquazen-green text-2xl mb-6">
+                            <i class="fa-solid fa-scissors"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Corte Razal & Grooming</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            Corte de pelo según el estándar de raza o estilo comercial preferido por el dueño,
+                            desgerminación y peinado.
+                        </p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Incluye baño completo previo</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Corte a tijera o máquina según raza</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Perfumado y accesorio de regalo</li>
+                        </ul>
+                    </div>
+                    <button onclick="openBookingModal('Corte Razal & Grooming')"
+                        class="w-full py-3 rounded-xl bg-aquazen-green text-black font-extrabold text-xs uppercase tracking-wider hover:bg-emerald-400 transition-all shadow-lg">
+                        Agendar Servicio
+                    </button>
+                </div>
+
+                <!-- Spa & Deslanado -->
+                <div
+                    class="bg-aquazen-card border border-aquazen-border rounded-2xl p-6 hover:border-aquazen-green/50 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-12 h-12 rounded-xl bg-aquazen-green/10 border border-aquazen-green/30 flex items-center justify-center text-aquazen-green text-2xl mb-6">
+                            <i class="fa-solid fa-wind"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Tratamiento de Deslanado</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                            Técnica especializada para retirar hasta el 90% del pelo muerto en mudanza, reduciendo la
+                            caída en el hogar.
+                        </p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Cepillado con instrumental Furminator</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Mascarilla nutracéutica de pelaje</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-aquazen-green"></i>
+                                Ideal para Husky, Pastor, Golden, etc.</li>
+                        </ul>
+                    </div>
+                    <button onclick="openBookingModal('Tratamiento de Deslanado')"
+                        class="w-full py-3 rounded-xl bg-aquazen-bg border border-aquazen-border text-aquazen-green font-bold text-xs uppercase tracking-wider hover:bg-aquazen-green hover:text-black transition-all">
+                        Agendar Servicio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIENDA DE PRODUCTOS Y ALIMENTOS -->
+    <section id="productos" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <span
+                        class="text-xs font-bold text-aquazen-blue uppercase tracking-widest bg-aquazen-blue/10 px-3 py-1 rounded-full border border-aquazen-blue/20">
+                        Catálogo de Tienda
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white mt-3">Alimentos y Productos</h2>
+                    <p class="text-gray-400 text-sm mt-1">Selecciona los productos y agrégalos a tu carrito de compras.
+                    </p>
+                </div>
+
+                <!-- CATEGORY FILTER BUTTONS -->
+                <div class="flex flex-wrap gap-2" id="category-filters">
+                    <button onclick="filterProducts('all')"
+                        class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold bg-aquazen-blue text-black transition-all">Todos</button>
+                    <button onclick="filterProducts('alimentos')"
+                        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-aquazen-card border border-aquazen-border text-gray-300 hover:text-white transition-all">Comida
+                        & Concentrados</button>
+                    <button onclick="filterProducts('accesorios')"
+                        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-aquazen-card border border-aquazen-border text-gray-300 hover:text-white transition-all">Accesorios
+                        & Juguetes</button>
+                    <button onclick="filterProducts('higiene')"
+                        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-aquazen-card border border-aquazen-border text-gray-300 hover:text-white transition-all">Higiene
+                        & Cuidado</button>
+                </div>
+            </div>
+
+            <!-- PRODUCT GRID -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="product-grid">
+                <!-- Products dynamically injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- UBICACIÓN (ANTERIORMENTE NUESTRAS 3 SUCURSALES) -->
+    <section id="ubicacion" class="py-20 bg-aquazen-card/30 border-t border-aquazen-border/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span
+                    class="text-xs font-bold text-aquazen-green uppercase tracking-widest bg-aquazen-green/10 px-3 py-1 rounded-full border border-aquazen-green/20">
+                    Encuéntranos
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white">Ubicación</h2>
+                <p class="text-gray-400 text-sm sm:text-base">
+                    Visita cualquiera de nuestras 3 sucursales para atención de peluquería o retiro de productos de
+                    tienda.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Sucursal 1 -->
+                <div
+                    class="bg-aquazen-card border border-aquazen-border rounded-2xl overflow-hidden hover:border-aquazen-blue transition-all group">
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <span
+                                    class="text-[10px] font-black uppercase tracking-widest text-aquazen-blue bg-aquazen-blue/10 px-2.5 py-1 rounded-md">Sucursal
+                                    Norte</span>
+                                <h3 class="text-xl font-bold text-white mt-2">AQUAZEN Plaza Norte</h3>
+                            </div>
+                            <span class="flex h-3 w-3 relative">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-aquazen-green opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-aquazen-green"></span>
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-aquazen-red"></i> Av. Principal Norte #12-45, C.C.
+                            Las Palmas
+                        </p>
+                        <div class="space-y-2 text-xs text-gray-300 border-t border-aquazen-border/60 pt-4">
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Horario:</span>
+                                <span class="font-semibold text-white">Lun - Sáb: 8:00 AM - 7:00 PM</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Teléfono:</span>
+                                <span class="font-semibold text-aquazen-blue">+58 412 111 2233</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Servicios:</span>
+                                <span class="font-semibold text-aquazen-green">Peluquería & Tienda</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-aquazen-bg/80 px-6 py-3 border-t border-aquazen-border flex justify-between items-center">
+                        <a href="https://maps.google.com" target="_blank"
+                            class="text-xs font-bold text-aquazen-blue hover:underline flex items-center gap-1">
+                            Ver en Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                        <span
+                            class="text-[10px] font-bold text-aquazen-green bg-aquazen-green/10 px-2 py-0.5 rounded">Abierto
+                            Hoy</span>
+                    </div>
+                </div>
+
+                <!-- Sucursal 2 -->
+                <div
+                    class="bg-aquazen-card border border-aquazen-border rounded-2xl overflow-hidden hover:border-aquazen-blue transition-all group">
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <span
+                                    class="text-[10px] font-black uppercase tracking-widest text-aquazen-blue bg-aquazen-blue/10 px-2.5 py-1 rounded-md">Sucursal
+                                    Centro</span>
+                                <h3 class="text-xl font-bold text-white mt-2">AQUAZEN Galería Centro</h3>
+                            </div>
+                            <span class="flex h-3 w-3 relative">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-aquazen-green opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-aquazen-green"></span>
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-aquazen-red"></i> Calle Bolívar, Transversal 4,
+                            Local 8
+                        </p>
+                        <div class="space-y-2 text-xs text-gray-300 border-t border-aquazen-border/60 pt-4">
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Horario:</span>
+                                <span class="font-semibold text-white">Lun - Sáb: 8:30 AM - 6:30 PM</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Teléfono:</span>
+                                <span class="font-semibold text-aquazen-blue">+58 414 444 5566</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Servicios:</span>
+                                <span class="font-semibold text-aquazen-green">Peluquería & Tienda</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-aquazen-bg/80 px-6 py-3 border-t border-aquazen-border flex justify-between items-center">
+                        <a href="https://maps.google.com" target="_blank"
+                            class="text-xs font-bold text-aquazen-blue hover:underline flex items-center gap-1">
+                            Ver en Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                        <span
+                            class="text-[10px] font-bold text-aquazen-green bg-aquazen-green/10 px-2 py-0.5 rounded">Abierto
+                            Hoy</span>
+                    </div>
+                </div>
+
+                <!-- Sucursal 3 -->
+                <div
+                    class="bg-aquazen-card border border-aquazen-border rounded-2xl overflow-hidden hover:border-aquazen-blue transition-all group">
+                    <div class="p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <span
+                                    class="text-[10px] font-black uppercase tracking-widest text-aquazen-blue bg-aquazen-blue/10 px-2.5 py-1 rounded-md">Sucursal
+                                    Sur</span>
+                                <h3 class="text-xl font-bold text-white mt-2">AQUAZEN Boulevard Sur</h3>
+                            </div>
+                            <span class="flex h-3 w-3 relative">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-aquazen-green opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-aquazen-green"></span>
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-aquazen-red"></i> Av. Las Industrias, C.C. Sur
+                            Express, Nivel 1
+                        </p>
+                        <div class="space-y-2 text-xs text-gray-300 border-t border-aquazen-border/60 pt-4">
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Horario:</span>
+                                <span class="font-semibold text-white">Lun - Dom: 9:00 AM - 8:00 PM</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Teléfono:</span>
+                                <span class="font-semibold text-aquazen-blue">+58 416 777 8899</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span class="text-gray-400">Servicios:</span>
+                                <span class="font-semibold text-aquazen-green">Peluquería & Tienda</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-aquazen-bg/80 px-6 py-3 border-t border-aquazen-border flex justify-between items-center">
+                        <a href="https://maps.google.com" target="_blank"
+                            class="text-xs font-bold text-aquazen-blue hover:underline flex items-center gap-1">
+                            Ver en Google Maps <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                        <span
+                            class="text-[10px] font-bold text-aquazen-green bg-aquazen-green/10 px-2 py-0.5 rounded">Abierto
+                            Hoy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-aquazen-bg border-t border-aquazen-border/80 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <span
+                        class="text-xs uppercase tracking-widest text-aquazen-red font-extrabold block">Distribuidora</span>
+                    <span class="text-2xl font-black text-white">AQUA<span class="text-aquazen-blue">ZEN</span></span>
+                    <p class="text-xs text-gray-400 mt-1">Especialistas en Estética Canina y Distribución de Alimentos
+                        para Mascotas.</p>
+                </div>
+
+                <div class="flex items-center space-x-6 text-gray-400">
+                    <a href="#" class="hover:text-aquazen-blue text-lg transition-colors"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-aquazen-green text-lg transition-colors"><i
+                            class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#" class="hover:text-aquazen-blue text-lg transition-colors"><i
+                            class="fa-brands fa-facebook"></i></a>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-aquazen-border/40 text-center text-xs text-gray-500">
+                &copy; 2026 Distribuidora AQUAZEN. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SLIDE-OVER CARRITO DE COMPRAS -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title"
+        role="dialog" aria-modal="true">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="closeCart()"></div>
+
+        <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+            <div
+                class="w-screen max-w-md bg-aquazen-card border-l border-aquazen-border text-white shadow-2xl flex flex-col justify-between">
+
+                <!-- Cart Header -->
+                <div class="p-6 border-b border-aquazen-border flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-cart-shopping text-aquazen-green text-xl"></i>
+                        <h2 class="text-lg font-bold text-white">Tu Carrito AQUAZEN</h2>
+                    </div>
+                    <button onclick="closeCart()" class="text-gray-400 hover:text-white p-2 rounded-lg">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div class="p-6 overflow-y-auto flex-1 space-y-4" id="cart-items">
+                    <!-- Items rendered dynamically -->
+                </div>
+
+                <!-- Cart Footer / Checkout -->
+                <div class="p-6 border-t border-aquazen-border bg-aquazen-bg/80 space-y-4">
+                    <div class="flex justify-between items-center text-sm font-semibold">
+                        <span class="text-gray-400">Total a pagar:</span>
+                        <span class="text-2xl font-black text-aquazen-green" id="cart-total">$0.00</span>
+                    </div>
+
+                    <button onclick="checkoutWhatsApp()"
+                        class="w-full py-4 rounded-xl bg-aquazen-green text-black font-extrabold text-sm uppercase tracking-wider hover:bg-emerald-400 transition-all shadow-lg flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        Enviar Pedido por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AGENDAR PELUQUERÍA -->
+    <div id="booking-modal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-black/75 backdrop-blur-sm" onclick="closeBookingModal()">
+            </div>
+
+            <div
+                class="inline-block w-full max-w-md my-8 overflow-hidden text-left align-middle transition-all transform bg-aquazen-card border border-aquazen-border shadow-2xl rounded-2xl p-6 relative">
+                <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+
+                <div class="flex items-center gap-3 mb-4">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-aquazen-green/20 text-aquazen-green flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-scissors"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Reserva de Peluquería</h3>
+                        <p class="text-xs text-aquazen-green font-semibold" id="selected-service-title">Servicio
+                            Seleccionado</p>
+                    </div>
+                </div>
+
+                <form onsubmit="submitBooking(event)" class="space-y-4 mt-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nombre del Dueño</label>
+                        <input type="text" required
+                            class="w-full bg-aquazen-bg border border-aquazen-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-aquazen-green">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nombre y Raza de la
+                            Mascota</label>
+                        <input type="text" required placeholder="Ej: Toby - Poodle"
+                            class="w-full bg-aquazen-bg border border-aquazen-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-aquazen-green">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Sucursal Preferida</label>
+                        <select
+                            class="w-full bg-aquazen-bg border border-aquazen-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-aquazen-green">
+                            <option>Sucursal Norte (C.C. Las Palmas)</option>
+                            <option>Sucursal Centro (Galería Centro)</option>
+                            <option>Sucursal Sur (Boulevard Sur)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Fecha Deseada</label>
+                        <input type="date" required
+                            class="w-full bg-aquazen-bg border border-aquazen-border rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-aquazen-green">
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3.5 rounded-xl bg-aquazen-green text-black font-extrabold text-xs uppercase tracking-wider hover:bg-emerald-400 transition-all mt-4">
+                        Confirmar Cita por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Catalog Products Data
+        const products = [
+            {
+                id: 1,
+                name: "Super Premium Adulto Perros 15kg",
+                category: "alimentos",
+                price: 45.00,
+                image: "fa-bag-shopping",
+                desc: "Fórmula de alta proteína para perros adultos."
+            },
+            {
+                id: 2,
+                name: "Alimento Gatos Esterilizados 3kg",
+                category: "alimentos",
+                price: 22.50,
+                image: "fa-cat",
+                desc: "Control de peso y cuidado urinario."
+            },
+            {
+                id: 3,
+                name: "Champú Hipoalergénico Aloe 500ml",
+                category: "higiene",
+                price: 12.00,
+                image: "fa-pump-soap",
+                desc: "Especial para pieles sensibles y brillo pelaje."
+            },
+            {
+                id: 4,
+                name: "Cepillo Deslanador Pro Grooming",
+                category: "accesorios",
+                price: 18.00,
+                image: "fa-scissors",
+                desc: "Remueve pelo muerto sin dañar la piel."
+            },
+            {
+                id: 5,
+                name: "Snacks Dentales Limpieza Bucal 250g",
+                category: "alimentos",
+                price: 8.50,
+                image: "fa-bone",
+                desc: "Previene sarro y mantiene aliento fresco."
+            },
+            {
+                id: 6,
+                name: "Collar Ajustable Reflexivo Pro",
+                category: "accesorios",
+                price: 10.00,
+                image: "fa-dog",
+                desc: "Alta durabilidad para paseos nocturnos."
+            }
+        ];
+
+        let cart = [];
+
+        // Render Products
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-aquazen-card border border-aquazen-border rounded-2xl p-5 hover:border-aquazen-blue transition-all flex flex-col justify-between group';
+                card.innerHTML = `
+                    <div>
+                        <div class="h-40 rounded-xl bg-aquazen-bg/80 border border-aquazen-border/60 flex items-center justify-center text-aquazen-blue text-5xl mb-4 group-hover:scale-105 transition-transform duration-300">
+                            <i class="fa-solid ${product.image}"></i>
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-wider text-aquazen-blue bg-aquazen-blue/10 px-2 py-0.5 rounded">
+                            ${product.category}
+                        </span>
+                        <h3 class="text-base font-bold text-white mt-2">${product.name}</h3>
+                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">${product.desc}</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between pt-4 border-t border-aquazen-border/60">
+                        <span class="text-xl font-black text-white">$${product.price.toFixed(2)}</span>
+                        <button onclick="addToCart(${product.id})" class="px-3 py-2 rounded-xl bg-aquazen-blue/10 border border-aquazen-blue/30 text-aquazen-blue hover:bg-aquazen-blue hover:text-black font-bold text-xs transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus"></i> Agregar
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter Products
+        function filterProducts(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-aquazen-blue', 'text-black');
+                btn.classList.add('bg-aquazen-card', 'text-gray-300');
+            });
+
+            event.target.classList.remove('bg-aquazen-card', 'text-gray-300');
+            event.target.classList.add('bg-aquazen-blue', 'text-black');
+
+            if (category === 'all') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                renderProducts(filtered);
+            }
+        }
+
+        // Cart Logic
+        function addToCart(productId) {
+            const item = products.find(p => p.id === productId);
+            const existing = cart.find(p => p.id === productId);
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+
+            updateCartUI();
+            openCart();
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            cartCount.textContent = totalCount;
+            cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <i class="fa-solid fa-cart-flatbed text-4xl mb-3 block"></i>
+                        Tu carrito está vacío.
+                    </div>
+                `;
+                return;
+            }
+
+            cartItemsContainer.innerHTML = '';
+            cart.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between p-3 rounded-xl bg-aquazen-bg border border-aquazen-border';
+                div.innerHTML = `
+                    <div>
+                        <h4 class="text-sm font-bold text-white">${item.name}</h4>
+                        <p class="text-xs text-aquazen-green font-semibold">$${item.price.toFixed(2)} x ${item.qty}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="changeQty(${item.id}, -1)" class="w-7 h-7 rounded-lg bg-aquazen-card border border-aquazen-border text-white text-xs font-bold hover:bg-aquazen-red transition-colors">-</button>
+                        <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                        <button onclick="changeQty(${item.id}, 1)" class="w-7 h-7 rounded-lg bg-aquazen-card border border-aquazen-border text-white text-xs font-bold hover:bg-aquazen-green hover:text-black transition-colors">+</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(div);
+            });
+        }
+
+        function changeQty(productId, delta) {
+            const item = cart.find(p => p.id === productId);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    cart = cart.filter(p => p.id !== productId);
+                }
+            }
+            updateCartUI();
+        }
+
+        function openCart() {
+            document.getElementById('cart-drawer').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-drawer').classList.add('hidden');
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return alert('El carrito está vacío.');
+            let msg = 'Hola Distribuidora AQUAZEN! Quisiera realizar el siguiente pedido:\n\n';
+            cart.forEach(item => {
+                msg += `• ${item.name} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
+            });
+            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            msg += `\nTotal: $${total.toFixed(2)}`;
+
+            window.open(`https://wa.me/584121112233?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // Booking Modal Logic
+        function openBookingModal(serviceName) {
+            document.getElementById('selected-service-title').textContent = serviceName;
+            document.getElementById('booking-modal').classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.add('hidden');
+        }
+
+        function submitBooking(e) {
+            e.preventDefault();
+            alert('¡Gracias! Serás redirigido a WhatsApp para confirmar la hora de la cita de peluquería.');
+            closeBookingModal();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Init App
+        renderProducts(products);
+    </script>
+</body>
+
+</html>
